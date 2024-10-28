@@ -34,3 +34,4 @@ CREATE TABLE Graduates (
     FOREIGN KEY (specialty_id) REFERENCES Specialties(specialty_id),
     FOREIGN KEY (study_area_id) REFERENCES Study_Areas(study_area_id)
 );
+ALTER TABLE Graduates MODIFY COLUMN education_level VARCHAR(255);
