@@ -6,6 +6,7 @@ services:
     image: postgres:15
     container_name: data-base-container
     environment:
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345678
     volumes:
