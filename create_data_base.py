@@ -51,24 +51,27 @@ def create_tables(cursor):
             CREATE TABLE IF NOT EXISTS Regions (
                 region_id SERIAL PRIMARY KEY,
                 object_level VARCHAR(100) NOT NULL,
-                object_name VARCHAR(255) UNIQUE NOT NULL,
+                object_name VARCHAR(255) NOT NULL,
                 oktmo VARCHAR(11) NOT NULL,
                 okato VARCHAR(11) NOT NULL
             );
+            CREATE UNIQUE INDEX ON Regions (object_name);
         """,
         "Study_Areas": """
             CREATE TABLE IF NOT EXISTS Study_Areas (
                 study_area_id SERIAL PRIMARY KEY,
-                study_area_name VARCHAR(255) UNIQUE NOT NULL
+                study_area_name VARCHAR(255) NOT NULL
             );
+            CREATE UNIQUE INDEX ON Study_Areas (study_area_name);  
         """,
         "Specialties": """
             CREATE TABLE IF NOT EXISTS Specialties (
                 specialty_id SERIAL PRIMARY KEY,
                 specialty_section VARCHAR(255) NOT NULL,
-                specialty_code VARCHAR(10) UNIQUE NOT NULL,
+                specialty_code VARCHAR(10) NOT NULL,
                 specialty_name VARCHAR(255) NOT NULL
             );
+            CREATE UNIQUE INDEX ON Specialties (specialty_code);
         """,
         "Graduates": """
             CREATE TABLE IF NOT EXISTS Graduates (
@@ -96,9 +99,6 @@ def create_tables(cursor):
         except Exception as e:
             print(f"Ошибка в создании/использовании таблицы '{table_name}': {e}")
 
-# Исполнение
-if __name__ == "__main__":
-    create_database_and_tables()
 
 """
 Описание полей:
