@@ -9,10 +9,11 @@ from psycopg2 import sql
 def create_connection():
     try:
         connection = psycopg2.connect(
-            host='localhost',        # Адрес PostgreSQL
-            database='graduates_db',  # База данных
-            user='postgres',          # Имя пользователя PostgreSQL
-            password='12345678'          # Пароль
+            dbname='graduates_db',  # База данных
+            user='postgres',  # Имя пользователя PostgreSQL
+            password='12345678',  # Пароль
+            host='data-base-container',        # Адрес PostgreSQL
+            port='5432'
         )
         print("Подключение к базе данных PostgreSQL успешно!")
         return connection
