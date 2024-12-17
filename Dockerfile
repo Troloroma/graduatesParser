@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем библиотеки Python (postgres, pandas)
-RUN pip install --no-cache-dir psycopg2 pandas
+RUN pip install --no-cache-dir psycopg2-binary pandas
 
 # Создаем рабочую директорию
 WORKDIR /app

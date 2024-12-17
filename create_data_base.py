@@ -6,7 +6,7 @@ def create_database_and_tables():
         'dbname': 'postgres',   # Используем системную БД для проверки и создания базы
         'user': 'postgres',         # Логин БД
         'password': '12345678', # Пароль от БД
-        'host': 'data-base-container',    # Адрес БД
+        'host': 'localhost',    # Адрес БД
         'port': '5432'            # Порт БД
     }
 

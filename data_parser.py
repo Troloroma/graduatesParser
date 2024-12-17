@@ -12,7 +12,7 @@ def create_connection():
             dbname='graduates_db',  # База данных
             user='postgres',  # Имя пользователя PostgreSQL
             password='12345678',  # Пароль
-            host='data-base-container',        # Адрес PostgreSQL
+            host='localhost',        # Адрес PostgreSQL
             port='5432'
         )
         print("Подключение к базе данных PostgreSQL успешно!")

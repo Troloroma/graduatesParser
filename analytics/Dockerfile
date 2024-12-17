@@ -1,5 +1,5 @@
 # Базовый образ с Jupyter и Python
-FROM jupyter/base-notebook:python-3.10.7
+FROM jupyter/base-notebook:latest
 
 # Устанавливаем необходимые зависимости
 RUN pip install --no-cache-dir \
@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir \
     matplotlib \
     sqlalchemy \
     geopandas \
-    psycopg2 \
+    psycopg2-binary \
     shapely \
     nbconvert
 

@@ -20,7 +20,7 @@ services:
     build:
       context: .  # Путь к Dockerfile
       dockerfile: Dockerfile
-    container_name: data-parser-container
+    container_name: parser-container
     depends_on:
       - postgres
     networks:
@@ -31,7 +31,7 @@ services:
     build:
       context: ./analytics  # Путь к Dockerfile для Jupyter
       dockerfile: Dockerfile
-    container_name: data-analysis-container
+    container_name: analysis-container
     depends_on:
       - postgres  # Зависимость от PostgreSQL-контейнера
       - data-parser # Зависимость от парсинг-контейнера
