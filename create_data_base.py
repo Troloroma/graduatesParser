@@ -1,4 +1,5 @@
 import psycopg2
+import contextlib
 
 def create_database_and_tables():
     # Параметры подключения к PostgreSQL
@@ -15,7 +16,7 @@ def create_database_and_tables():
 
     # Подключаемся к PostgreSQL
     try:
-        with psycopg2.connect(**db_params) as conn:
+        with contextlib.closing(psycopg2.connect(**db_params)) as conn:
             conn.autocommit = True  # Включаем autocommit для создания базы
             with conn.cursor() as cursor:
                 # Проверяем существование базы данных
@@ -50,7 +51,7 @@ def create_tables(cursor):
             CREATE TABLE IF NOT EXISTS Regions (
                 region_id SERIAL PRIMARY KEY,
                 object_level VARCHAR(100) NOT NULL,
-                object_name VARCHAR(255) NOT NULL,
+                object_name VARCHAR(255) UNIQUE NOT NULL,
                 oktmo VARCHAR(11) NOT NULL,
                 okato VARCHAR(11) NOT NULL
             );
@@ -58,14 +59,14 @@ def create_tables(cursor):
         "Study_Areas": """
             CREATE TABLE IF NOT EXISTS Study_Areas (
                 study_area_id SERIAL PRIMARY KEY,
-                study_area_name VARCHAR(255) NOT NULL
+                study_area_name VARCHAR(255) UNIQUE NOT NULL
             );
         """,
         "Specialties": """
             CREATE TABLE IF NOT EXISTS Specialties (
                 specialty_id SERIAL PRIMARY KEY,
                 specialty_section VARCHAR(255) NOT NULL,
-                specialty_code VARCHAR(10) NOT NULL,
+                specialty_code VARCHAR(10) UNIQUE NOT NULL,
                 specialty_name VARCHAR(255) NOT NULL
             );
         """,
