@@ -26,6 +26,12 @@ services:
       - postgres
     networks:
       - app-network
+    healthcheck: # Проверка на завершение работы
+      test: [ "CMD-SHELL", "pgrep -f main.py || exit 1" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
   # Контейнер анализа данных
   analysis:
@@ -34,8 +40,10 @@ services:
       dockerfile: Dockerfile
     container_name: analysis-container
     depends_on:
-      - postgres  # Зависимость от PostgreSQL-контейнера
-      - data-parser # Зависимость от парсинг-контейнера
+      postgres:  # Зависимость от PostgreSQL-контейнера
+        condition: service_started
+      data-parser: # Зависимость от парсинг-контейнера
+        condition: service_healthy  # Ждём состояния
     volumes:
       - ./output:/home/jovyan/analytics/output  # Монтируем папку для вывода HTML-результата
     ports:
@@ -44,9 +52,7 @@ services:
       - app-network
     command: >
       bash -c "
-        jupyter nbconvert --to html --template=classic /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/output/output.html && \
-        docker stop data-base-container && \
-        docker stop analysis-container
+        jupyter nbconvert --to html --template=classic /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/output/output.html
       "
 
 
