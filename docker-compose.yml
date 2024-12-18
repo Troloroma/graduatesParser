@@ -37,16 +37,16 @@ services:
       - postgres  # Зависимость от PostgreSQL-контейнера
       - data-parser # Зависимость от парсинг-контейнера
     volumes:
-      - ./output:/home/jovyan/output  # Монтируем папку для вывода HTML-результата
+      - ./output:/home/jovyan/analytics/output  # Монтируем папку для вывода HTML-результата
     ports:
       - "8888:8888"  # Открываем порт для Jupyter
     networks:
       - app-network
     command: >
       bash -c "
-        jupyter nbconvert --to html --template=classic /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/output/output.html && \
+        jupyter nbconvert --to html --template=classic /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/output/output.html && \
         docker stop data-base-container && \
-        docker stop data-analysis-container
+        docker stop analysis-container
       "
 
 

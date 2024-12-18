@@ -1,6 +1,9 @@
 # Базовый образ с Jupyter и Python
 FROM jupyter/base-notebook:latest
 
+# Убедимся, что работаем от пользователя root
+USER root
+
 # Устанавливаем необходимые зависимости
 RUN pip install --no-cache-dir \
     pandas \
@@ -19,6 +22,14 @@ COPY ./russia_regions/russia_regions.geojson ./russia_regions/russia_regions.geo
 
 # Копируем Jupyter Notebook в контейнер
 COPY analytics.ipynb ./
+
+# Создаем директорию для вывода и настраиваем права
+RUN mkdir -p ./output && \
+    chown -R jovyan:users ./output && \
+    chmod -R 755 ./output
+
+# Возвращаемся к пользователю jovyan для безопасности
+USER jovyan
 
 # Открываем порт для Jupyter
 EXPOSE 8888
