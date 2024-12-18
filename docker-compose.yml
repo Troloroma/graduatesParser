@@ -43,10 +43,10 @@ services:
     networks:
       - app-network
     command: >
-      bash -c "
-        jupyter nbconvert --to html --template=classic /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/output/output.html
-      "
-
+       bash -c "
+       	 jupyter nbconvert --to notebook --execute /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/result.ipynb && \
+         jupyter nbconvert --to html --template=classic /home/jovyan/analytics/result.ipynb --output /home/jovyan/analytics/output/output.html
+       "
 
 networks:
   app-network:
@@ -54,3 +54,4 @@ networks:
 
 volumes:
   postgres_data:  # Том для хранения данных
+  

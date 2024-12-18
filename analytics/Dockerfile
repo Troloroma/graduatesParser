@@ -28,8 +28,6 @@ RUN mkdir -p ./output && \
     chown -R jovyan:users ./output && \
     chmod -R 755 ./output
 
-# Возвращаемся к пользователю jovyan для безопасности
-#USER jovyan
 
 # Открываем порт для Jupyter
 EXPOSE 8888

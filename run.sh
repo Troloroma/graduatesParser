@@ -71,6 +71,7 @@ while true; do
   fi
 
   if [ "$PARSER_STATUS" == "exited" ] && [ "$ANALYSIS_STATUS" == "exited" ] && [ "$DB_STATUS" == "exited" ]; then
+    docker-compose down
     echo "Все контейнеры завершили свою работу."
     break
   fi
