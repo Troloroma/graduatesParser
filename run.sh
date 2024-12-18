@@ -21,20 +21,23 @@ if [ -d "$OUTPUT_DIR" ]; then
   rm -rf "$OUTPUT_DIR"
 fi
 
-mkdir "$OUTPUT_DIR"
-chmod -R 775 "$OUTPUT_DIR"
-chown -R $(id -u):$(id -g) "$OUTPUT_DIR"
-echo "Папка output создана и настроена."
+# mkdir "$OUTPUT_DIR"
 
 # Билд и запуск контейнеров
 if [ -f "$DOCKER_COMPOSE_FILE" ]; then
   echo "Осуществляем сборку и запуск контейнеров через docker-compose..."
-  docker-compose up --build -d
+  docker-compose build
+  echo "Контейнеры собраны."
+  docker-compose up -d
   echo "Контейнеры запущены."
 else
   echo "Файл docker-compose.yml не найден. Убедитесь, что он находится в корневой папке дистрибутива."
   exit 1
 fi
+
+chmod -R 775 "$OUTPUT_DIR"
+chown -R $(id -u):$(id -g) "$OUTPUT_DIR"
+echo "Папка output создана и настроена."
 
 # Функция для проверки состояния контейнера
 check_container_status() {
@@ -50,6 +53,8 @@ while true; do
 
   if [ "$PARSER_STATUS" == "exited" ] && [ "$PARSER_MESSAGE_SHOWN" == "false" ]; then
     echo "Передача данных в БД завершена. Осуществляется обработка данных."
+    echo "Запускаем контейнер для анализа данных:"
+    docker restart "$ANALYSIS_CONTAINER"
     PARSER_MESSAGE_SHOWN=true
   fi
 
