@@ -27,7 +27,7 @@ services:
     networks:
       - app-network
     healthcheck: # Проверка на завершение работы
-      test: [ "CMD-SHELL", "pgrep -f main.py || exit 1" ]
+      test: [ "CMD-SHELL", "! pgrep -f main.py && exit 0 || exit 1" ]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -43,7 +43,7 @@ services:
       postgres:  # Зависимость от PostgreSQL-контейнера
         condition: service_started
       data-parser: # Зависимость от парсинг-контейнера
-        condition: service_healthy  # Ждём состояния
+        condition: service_completed_successfully  # Ждём состояния
     volumes:
       - ./output:/home/jovyan/analytics/output  # Монтируем папку для вывода HTML-результата
     ports:

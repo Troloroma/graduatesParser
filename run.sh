@@ -4,6 +4,7 @@
 OUTPUT_DIR="./output"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 PARSER_CONTAINER="parser-container"
+PARSER_MESSAGE_SHOWN=false
 ANALYSIS_CONTAINER="analysis-container"
 DB_CONTAINER="data-base-container"
 OUTPUT_FILE="${OUTPUT_DIR}/output.html"
@@ -47,8 +48,9 @@ while true; do
   ANALYSIS_STATUS=$(check_container_status "$ANALYSIS_CONTAINER")
   DB_STATUS=$(check_container_status "$DB_CONTAINER")
 
-  if [ "$PARSER_STATUS" == "exited" ]; then
+  if [ "$PARSER_STATUS" == "exited" ] && [ "$PARSER_MESSAGE_SHOWN" == "false" ]; then
     echo "Передача данных в БД завершена. Осуществляется обработка данных."
+    PARSER_MESSAGE_SHOWN=true
   fi
 
   if [ -f "$OUTPUT_FILE" ]; then
