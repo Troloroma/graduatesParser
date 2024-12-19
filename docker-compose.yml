@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  # Контейнер базы данных
+  postgres:
+    image: postgres:15
+    container_name: data-base-container
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Хранение данных
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  # Контейнер парсера
+  data-parser:
+    build:
+      context: .  # Путь к Dockerfile
+      dockerfile: Dockerfile
+    container_name: parser-container
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  # Контейнер анализа данных
+  analysis:
+    build:
+      context: ./analytics  # Путь к Dockerfile для Jupyter
+      dockerfile: Dockerfile
+    container_name: analysis-container
+    depends_on:
+      - postgres  # Зависимость от PostgreSQL-контейнера
+      - data-parser # Зависимость от парсинг-контейнера
+    volumes:
+      - ./output:/home/jovyan/analytics/output:rw  # Монтируем папку для вывода HTML-результата
+    ports:
+      - "8888:8888"  # Открываем порт для Jupyter
+    networks:
+      - app-network
+    command: >
+       bash -c "
+       	 jupyter nbconvert --to notebook --execute /home/jovyan/analytics/analytics.ipynb --output /home/jovyan/analytics/result.ipynb && \
+         jupyter nbconvert --to html --template=classic /home/jovyan/analytics/result.ipynb --output /home/jovyan/analytics/output/output.html
+       "
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:  # Том для хранения данных
+  

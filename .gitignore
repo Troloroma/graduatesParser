@@ -1,0 +1,15 @@
+*.db
+*.csv
+.env
+.idea/
+*.iml
+
+# Исключаем байт-код Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Исключаем данные из Git
+.git/
+.gitignore
